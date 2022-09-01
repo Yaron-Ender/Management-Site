@@ -1,8 +1,10 @@
 import home from '../assets/home.svg';
 import { NavLink } from 'react-router-dom';
-import { useLogout } from '../hooks/useLogout'
+import { useLogout } from '../hooks/useLogout';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const Navbar = () => {
+    const { user } = useAuthContext()
     const { logout,isPending } =useLogout()
     return (
         <div className='navbar'>
@@ -12,15 +14,17 @@ const Navbar = () => {
        <span>welcome</span>
         </li>
         <li>
-        <NavLink to='/login'>Login</NavLink>
+       {!user&&( <NavLink to='/login'>Login</NavLink>)}
         </li>
         <li>
-        <NavLink to='/signup'>Signup</NavLink>
+        {!user&&(<NavLink to='/signup'>Signup</NavLink>)}
         </li>
+        {user&&(
         <li>
         {!isPending &&<button className='btn' onClick={logout} >signout</button>}
         {isPending &&<button className='btn' disabled >Logging out...</button>}
-            </li>
+        </li>
+        )}
         </ul>   
         </div>
     );

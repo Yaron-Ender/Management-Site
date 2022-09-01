@@ -23,7 +23,7 @@ const signup =async (email,password,displayName,thumbnail)=>{
    if (!user) {
      throw new Error("could not complete sinup");
     }
-  // uplaod user thumbnail
+  // uplaod user thumbnail to storage
   const uploadPath =`thumbnail/${user.uid}/${thumbnail.name}`
   const path = ref(storage,uploadPath);
   const img =await uploadBytes(path,thumbnail)
@@ -33,7 +33,7 @@ const signup =async (email,password,displayName,thumbnail)=>{
   const docReff = doc(db,'users',user.uid);
   const userDoc =await getDoc(docReff);
   if(!userDoc.exists()){
-    setDoc(docReff,{online:true,photoURL,displayName})
+    setDoc(docReff,{online:true,photoURL,displayName,id:user.uid})
   }
 
   //dispatch login action

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSignup } from "../../hooks/useSignup"; 
 
 const Signup = () => {
-  const { signup,isPanding,error } = useSignup() 
+  const { signup,isPending,error } = useSignup() 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -73,8 +73,8 @@ const Signup = () => {
         <input required type="file" onChange={handleFileChange} />
         {thumbnailError && <div className="error">{thumbnailError}</div>}
       </label>
-      {!isPanding && <button className="btn">Sign up</button>}
-      {isPanding && <button className="btn" disabled>Loading...</button>}
+      {!isPending && <button className="btn">Sign up</button>}
+      {isPending && <button className="btn" disabled>Loading...</button>}
       {error && <div className="error">{error}</div>}
     </form>
   );

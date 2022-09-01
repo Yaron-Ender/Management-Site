@@ -16,5 +16,5 @@ const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp)
 const storage = getStorage()
  const timestamp = Timestamp.fromDate(new Date())
-export {auth,db,storage}
+export {auth,db,storage,Timestamp}
 console.log(timestamp.toDate());

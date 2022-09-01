@@ -14,8 +14,10 @@ const logout = async()=>{
         setIsPending(true)
     try{
     //update the the online property in user collection
-     const docReff=doc(db,'users',user.uid);
-     await updateDoc(docReff,{online:false})
+    if(user){
+      const docReff=doc(db,'users',user.uid);
+      await updateDoc(docReff,{online:false})
+    }
       await auth.signOut();
       //dispatch logout
       dispatch({ type: "LOGOUT" });
