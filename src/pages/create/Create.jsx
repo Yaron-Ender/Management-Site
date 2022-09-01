@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { useCollection } from "../../hooks/useCollection";
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { Timestamp } from "../../firebase/config";
+import { useFirestore } from "../../hooks/useFirestore";
 const categories = [
   { value: "development", label: "Development" },
   { value: "design", label: "Design" },
@@ -11,8 +13,8 @@ const categories = [
 ];
 
 const Create = () => {
-//   const history = useHistory();
-//   const { addDocument, response } = useFirestore("projects");
+const navigate =useNavigate()
+ const { addDocument, response } = useFirestore("projects");
 const { documents } = useCollection("users");
  const { user } = useAuthContext();
 const [users, setUsers] = useState([]);
@@ -64,8 +66,11 @@ return
     createdBy,
     comments: [],
   };
-
-  console.log(project);
+  //add document to projects collection
+  await addDocument(project);
+  if(!response.error){
+   navigate('/')
+  }
 };
     return (
       <div className="create-form">

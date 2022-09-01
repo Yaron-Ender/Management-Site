@@ -1,5 +1,5 @@
 import { useEffect,useState,useReducer } from "react";
-import { db,Timestamp} from "../firebase/firebaseSetup";
+import { db,Timestamp} from "../firebase/config";
 import {doc,collection,addDoc,deleteDoc } from "firebase/firestore";
 
 
@@ -35,7 +35,7 @@ if(!isCanceled){
 }
 }
 //add document
-const addDocument =async(doc)=>{
+const addDocument =async(doc,_collection)=>{
 setIscanceled(false)
 dispatch({type:'IS_PENDING'})
 try{
