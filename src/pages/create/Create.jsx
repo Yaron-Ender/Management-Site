@@ -112,7 +112,7 @@ return
           <label>
             <span>Assign to:</span>
             <Select
-              onChange={(option) => {
+              onChange={(option) =>{
                 setAssignedUsers(option);
               }}
               options={users}
