@@ -1,6 +1,6 @@
 import { useEffect,useState,useReducer } from "react";
 import { db,Timestamp} from "../firebase/config";
-import {doc,collection,addDoc,deleteDoc } from "firebase/firestore";
+import {doc,collection,addDoc,deleteDoc,updateDoc } from "firebase/firestore";
 
 
 let initialState={
@@ -17,13 +17,15 @@ case 'ADDED_DOCUMENT':
 return {isPending:false,document:action.payload,success:true,error:null}
 case 'DELETE_DOCUMENT':
 return {isPending:false, document:null,success: true, error: null };
+case 'UPDATE_DOCUMRNT':
+return {isPending:false,document:action.payload,success:true,error:null}
 case 'ERROR':
 return{...state,error:action.payload,document:null,success:false}
 default:
    return state
 }
 }
-export const useFirestore =(_collection)=>{
+export const useFirestore =(_collection)=>{    
 const [isCanceled,setIscanceled]=useState(false)
  const [response,dispatch]=useReducer(firestoreReducer,initialState)
  //collection reference
@@ -35,7 +37,7 @@ if(!isCanceled){
 }
 }
 //add document
-const addDocument =async(doc,_collection)=>{
+const addDocument =async(doc)=>{
 setIscanceled(false)
 dispatch({type:'IS_PENDING'})
 try{
@@ -57,8 +59,21 @@ const deleteDocument=async(id)=>{
  dispatchisNotCalciied({type:'ERROR',payload:err.message})
 }
 }
+//update documents
+const updateDocument =async(id,updates)=>{
+dispatch({ type: "IS_PENDING" });
+const refDoc = doc(refCol,id)
+try{
+const updateDocument = await updateDoc(refDoc,updates) 
+dispatchisNotCalciied({ type: "UPDATE_DOCUMENT", payload: updateDocument });
+return updateDocument
+}catch(err){
+dispatchisNotCalciied({ type: "ERROR", payload: err.message });
+return null
+}
+}
 useEffect(()=>{
 // return ()=>setIscanceled(true)
 },[])
-return{ addDocument,deleteDocument,response }
+return{ addDocument,deleteDocument,updateDocument,response }
 }

@@ -9,7 +9,6 @@ export const useDocument =(_collection,id)=>{
   const colRef=collection(db,_collection)
   const docRef=doc(colRef,id)
 const unsub = onSnapshot(docRef,(snapshot)=>{
-  console.log(snapshot.docs)
   if(snapshot.data()){
   setDocument({ ...snapshot.data(),id:snapshot.id});
   setError(null)
@@ -21,6 +20,6 @@ const unsub = onSnapshot(docRef,(snapshot)=>{
 setError('failed to get document')
 })
 return ()=>unsub()
- },[_collection])
+ },[_collection,id])
  return{document,error}
 }

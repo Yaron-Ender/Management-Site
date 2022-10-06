@@ -1,10 +1,28 @@
 import Avatar from "../../component/Avatar";
-
+import { useFirestore } from "../../hooks/useFirestore";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 const ProjectSummary = ({project}) => {
+const [redirect,setRedirect]=useState(false)
+const navigate = useNavigate()
+const { user } = useAuthContext()
+const { deleteDocument } =useFirestore('projects')
+useEffect(()=>{
+if(redirect){
+  navigate('/')
+}
+},[redirect])
+const handleClick=(e)=>{
+   deleteDocument(project.id);
+setRedirect(true);
+   
+}
     return (
      <div>
       <div className="project-summary">
         <h2 className="page-title">{project.name}</h2>
+        <p>By {project.createdBy.displayName}</p>
         <p className="due-date">
           Project due by {project.dueDate.toDate().toDateString()}
         </p>
@@ -20,6 +38,9 @@ const ProjectSummary = ({project}) => {
           ))}
         </div>
       </div>
+        {user.uid===project.createdBy.id &&(
+        <button className='btn' onClick={handleClick} >Mark as Complete</button>
+        )}
     </div>
     );
 };
